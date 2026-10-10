@@ -69,7 +69,7 @@ AI 自主渗透测试系统（Go 后端 + Next.js 前端）
 ### 方式一：一键安装脚本（推荐）
 
 ```bash
-git clone https://github.com/Autumn-27/ARTEX.git
+git clone https://github.com/xg106265/ARTEX.git
 cd ARTEX
 ./install.sh
 ```
@@ -84,12 +84,16 @@ cd ARTEX
 ### 方式二：Docker Compose（手动）
 
 ```bash
-git clone https://github.com/Autumn-27/ARTEX.git
+git clone https://github.com/xg106265/ARTEX.git
 cd ARTEX
 cp .env.example .env          # 填 POSTGRES_PASSWORD、可选 ANTHROPIC_API_KEY
-docker compose up -d          # 拉取 autumn27/artex 镜像 + postgres
+docker compose up -d          # 拉取 ghcr.io/xg106265/artex 镜像 + postgres
 # → http://localhost:8787
 ```
+
+本仓库镜像地址：`ghcr.io/xg106265/artex:latest`（支持 Linux amd64/arm64）。可在 `.env` 设置 `ARTEX_IMAGE` 覆盖镜像仓库，`ARTEX_TAG` 指定版本。
+
+首次使用前，先在本仓库 **Actions → release → Run workflow** 选择 `main` 构建并发布镜像；创建并推送 `v*` tag 时会同时发布对应版本镜像与 GitHub Release。手动分支构建使用 `dev` 版本，不提供页面一键更新；正式版本请使用 `vX.Y.Z` tag。首次发布后，在 GitHub Packages 的包设置中将 `artex` 的可见性设为 **Public**，否则拉取需要先 `docker login ghcr.io`。镜像发布使用内置 `GITHUB_TOKEN`，无需 Docker Hub 账号或密钥。
 
 镜像已含常用工具（ripgrep/curl/vim/npm/nmap…）；`./skills` 与 `./data` 以绑定挂载持久化。
 
@@ -100,7 +104,7 @@ docker compose up -d          # 拉取 autumn27/artex 镜像 + postgres
 
 ### 方式三：下载预编译二进制（Releases）
 
-到 [Releases](https://github.com/Autumn-27/ARTEX/releases) 下载对应平台的 zip，解压后得到 `artex` + `start.sh`（Windows 为 `start.bat`）+ `skills/` + `config.example.json`：
+到 [Releases](https://github.com/xg106265/ARTEX/releases) 下载对应平台的 zip，解压后得到 `artex` + `start.sh`（Windows 为 `start.bat`）+ `skills/` + `config.example.json`：
 
 ```bash
 cp config.example.json config.json   # 填好 database 连接
@@ -182,7 +186,7 @@ docker image prune -f          # 清理旧镜像（可选）
 
 ### 方式四：预编译二进制（Releases）
 
-到 [Releases](https://github.com/Autumn-27/ARTEX/releases) 下载新版本 zip，停掉旧进程后覆盖 `artex` 与 `skills/`（保留你的 `config.json` 与 `data/`），重启即可：
+到 [Releases](https://github.com/xg106265/ARTEX/releases) 下载新版本 zip，停掉旧进程后覆盖 `artex` 与 `skills/`（保留你的 `config.json` 与 `data/`），重启即可：
 
 ```bash
 cp -r <解压目录>/skills ./ && cp <解压目录>/artex ./
